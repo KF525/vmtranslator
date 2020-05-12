@@ -1,12 +1,12 @@
 import cats.effect.{IO, Resource}
+import parser.command.{InstructionComponent, VMCommand}
+import parser.Parser
+import parser.error.ParsingError
 
+import scala.collection.immutable
+
+//TODO: read in vm file, generate assembly file
 object VMTranslator extends App {
-
-  def generateAssembly(): Unit = {
-    val vmCode = IO { scala.io.Source.fromResource("HelloWorld.vm") }
-
-    Resource.fromAutoCloseable(vmCode)
-      .use(source => IO(println(source.getLines().toList.map(t => t + " More"))))
-      .unsafeRunSync()
-  }
+    //    val vmCode = Resource.make(IO.apply(Source.fromResource("HelloWorld.vm")))(source => IO(source.close()))
+    //    val assemblyCommands: List[String] = vmCode.use(generateAssemblyFile).unsafeRunSync()
 }
