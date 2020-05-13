@@ -5,38 +5,37 @@ import org.scalatest.matchers.should.Matchers
 import parser.error.ParsingError
 import parser.command.Segment.Static
 import parser.command.VMCommand._
-import parser.command.Location
 
 class ParserTest extends AnyFlatSpec with Matchers {
 
   "generateVMInstruction" should "return the correct VM Command" in {
-    Parser.generateVMInstruction("add") shouldBe Right(Add)
+    Parser.generateVMCommand("add") shouldBe Right(Add)
   }
 
   it should "ignore white space" in {
-    Parser.generateVMInstruction("   add") shouldBe Right(Add)
-    Parser.generateVMInstruction("add   ") shouldBe Right(Add)
+    Parser.generateVMCommand("   add") shouldBe Right(Add)
+    Parser.generateVMCommand("add   ") shouldBe Right(Add)
   }
 
   it should "handle non-matches" in {
-    Parser.generateVMInstruction("bad") shouldBe Left(ParsingError("Could not match: bad."))
-    Parser.generateVMInstruction("pop bad 4") shouldBe Left(ParsingError("Could not find segment: bad for pop bad 4."))
+    Parser.generateVMCommand("bad") shouldBe Left(ParsingError("Could not match: bad."))
+    Parser.generateVMCommand("pop bad 4") shouldBe Left(ParsingError("Invalid arguments: List(bad, 4) for Pop."))
   }
 
   it should "handle valid inputs correctly" in {
-    Parser.generateVMInstruction("pop static 4") shouldBe Right(Pop(Static, 4))
-    Parser.generateVMInstruction("push static 4") shouldBe Right(Push(Static, 4))
-    Parser.generateVMInstruction("goto START_LOOP") shouldBe Right(GoTo("START_LOOP"))
-    Parser.generateVMInstruction("if-goto START_LOOP") shouldBe Right(IfGoTo("START_LOOP"))
-    Parser.generateVMInstruction("label START_LOOP") shouldBe Right(Label("START_LOOP"))
-    Parser.generateVMInstruction("add") shouldBe Right(Add)
-    Parser.generateVMInstruction("sub") shouldBe Right(Subtract)
-    Parser.generateVMInstruction("neg") shouldBe Right(Negative)
-    Parser.generateVMInstruction("not") shouldBe Right(Not)
-    Parser.generateVMInstruction("and") shouldBe Right(And)
-    Parser.generateVMInstruction("or") shouldBe Right(Or)
-    Parser.generateVMInstruction("eq") shouldBe Right(Equal)
-    Parser.generateVMInstruction("gt") shouldBe Right(GreaterThan)
-    Parser.generateVMInstruction("lt") shouldBe Right(LessThan)
+    Parser.generateVMCommand("pop static 4") shouldBe Right(Pop(Static, 4))
+    Parser.generateVMCommand("push static 4") shouldBe Right(Push(Static, 4))
+    Parser.generateVMCommand("goto START_LOOP") shouldBe Right(GoTo("START_LOOP"))
+    Parser.generateVMCommand("if-goto START_LOOP") shouldBe Right(IfGoTo("START_LOOP"))
+    Parser.generateVMCommand("label START_LOOP") shouldBe Right(Label("START_LOOP"))
+    Parser.generateVMCommand("add") shouldBe Right(Add)
+    Parser.generateVMCommand("sub") shouldBe Right(Subtract)
+    Parser.generateVMCommand("neg") shouldBe Right(Negative)
+    Parser.generateVMCommand("not") shouldBe Right(Not)
+    Parser.generateVMCommand("and") shouldBe Right(And)
+    Parser.generateVMCommand("or") shouldBe Right(Or)
+    Parser.generateVMCommand("eq") shouldBe Right(Equal)
+    Parser.generateVMCommand("gt") shouldBe Right(GreaterThan)
+    Parser.generateVMCommand("lt") shouldBe Right(LessThan)
   }
 }
